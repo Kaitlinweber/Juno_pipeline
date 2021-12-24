@@ -1,12 +1,13 @@
-rule identify_species_fasta:
-    input: 
-        OUT + "/de_novo_assembly_filtered/{sample}.fasta"
+rule identify_species_fastq:
+    input:
+        r1=OUT + "/clean_fastq/{sample}_pR1.fastq.gz",        
+        r2=OUT + "/clean_fastq/{sample}_pR2.fastq.gz"
     output:
-        kraken2_kreport = OUT + '/identify_species/{sample}.kreport2',
-        bracken_s = OUT + '/identify_species/{sample}_species_content.txt',
-        bracken_kreport = OUT + '/identify_species/{sample}_bracken_species.kreport2'
+        kraken2_kreport = OUT + '/identify_species_fastq/{sample}.kreport2',
+        bracken_s = OUT + '/identify_species_fastq/{sample}_species_content.txt',
+        bracken_kreport = OUT + '/identify_species_fastq/{sample}_bracken_species.kreport2'
     log:
-        OUT + '/log/identify_species/{sample}.log'
+        OUT + '/log/identify_species_fastq/{sample}_fastq.log'
     threads: 
         config["threads"]["kraken2"]
     conda:
@@ -24,7 +25,7 @@ rule identify_species_fasta:
 kraken2 --db {params.kraken_db} \
     --threads {threads} \
     --report {output.kraken2_kreport} \
-    {input}  &> {log} 
+    --fastq-input {input}  &> {log} 
 
 bracken -d {params.kraken_db} \
     -i {output.kraken2_kreport} \
@@ -35,13 +36,13 @@ bracken -d {params.kraken_db} \
 
         """
 
-rule top_species_multireport:
+rule top_species_multireport_fastq:
     input: 
-        expand(OUT + '/identify_species/{sample}_species_content.txt', sample = SAMPLES)
+        expand(OUT + '/identify_species_fastq/{sample}_species_content.txt', sample = SAMPLES)
     output:
-        OUT + '/identify_species/top1_species_multireport.csv'
+        OUT + '/identify_species_fastq/top1_species_multireport.csv'
     log:
-        OUT + '/log/identify_species/multireport.log'
+        OUT + '/log/identify_species_fastq/multireport.log'
     threads: 
         config["threads"]["parsing"]
     resources:

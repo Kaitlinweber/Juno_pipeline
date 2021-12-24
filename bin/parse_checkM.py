@@ -11,10 +11,11 @@ def parse_checkM(input_checkm, output_checkm):
         infile = open(input_file, "r")
         for line in infile:
             if "scaffolds " in line:
+                genus = line.split()[1]
                 completeness = line.split()[-3]
                 contamination = line.split()[-2]
                 strain_heterogeneity = line.split()[-1]
-                checkm_dict[dict_key] = [completeness, contamination, strain_heterogeneity]
+                checkm_dict[dict_key] = [genus, completeness, contamination, strain_heterogeneity]
         infile.close()
     
     
@@ -22,7 +23,7 @@ def parse_checkM(input_checkm, output_checkm):
     outfile = open(str(output_checkm),"w")
 
     # write headers to file
-    outfile.write("sample\tcompleteness\tcontamination\tstrain_heterogeneity\n")
+    outfile.write("sample\tgenus\tcompleteness\tcontamination\tstrain_heterogeneity\n")
     
     # write CheckM stats to file
     for x, y in checkm_dict.items():

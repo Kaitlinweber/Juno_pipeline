@@ -50,6 +50,7 @@ include: "bin/rules/de_novo_assembly.smk"
     ##### Species identification                                            #####
     #############################################################################
 include: "bin/rules/identify_species.smk"
+include: "bin/rules/identify_species_fastq.smk"
 
     #############################################################################
     ##### Scaffold analyses: QUAST, CheckM, picard, bbmap and QC-metrics    #####
@@ -103,5 +104,8 @@ rule all:
         OUT + "/qc_de_novo_assembly/bbtools_scaffolds/bbtools_summary_report.tsv",
         expand(OUT + '/identify_species/{sample}_species_content.txt', sample = SAMPLES),
         expand(OUT + '/identify_species/{sample}_bracken_species.kreport2', sample = SAMPLES),
+        expand(OUT + '/identify_species_fastq/{sample}_species_content.txt', sample = SAMPLES),
+        expand(OUT + '/identify_species_fastq/{sample}_bracken_species.kreport2', sample = SAMPLES),
         OUT + '/identify_species/top1_species_multireport.csv',
+        OUT + '/identify_species_fastq/top1_species_multireport.csv',
         OUT + "/multiqc/multiqc.html"

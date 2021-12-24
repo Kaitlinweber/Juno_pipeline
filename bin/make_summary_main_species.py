@@ -87,9 +87,6 @@ if __name__ == '__main__':
                         default=[], nargs='+',
                         required=not '-i' in sys.argv and not '--input-dir' in sys.argv,
                         help='List of bracken results files (<sample>_species_content.txt files).')
-    argument_parser.add_argument('-o', '--output-multireport', type=str, 
-                        default='top1_species_multireport.csv',
-                        help='Path and name of the output file (must have .csv extension) for the desired multireport.')
     args = argument_parser.parse_args()
     multireport = BrackenMultireport(input_dir = args.input_dir,
                                     input_files = args.input_files,
