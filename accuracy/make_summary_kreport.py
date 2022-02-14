@@ -41,7 +41,7 @@ def read_kreport(list_of_kreports):
         kreport_result = pd.concat(kreport_result_list)
     return kreport_result
 
-
+ 
 if __name__ == '__main__':
     argument_parser = argparse.ArgumentParser()
     argument_parser.add_argument('path', type=pathlib.Path, 
